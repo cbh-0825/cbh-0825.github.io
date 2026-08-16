@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="柏翰的自我介紹網站，分享我的學習旅程、程式設計興趣、自然科學探索與電子實作研究。" />
+    <meta name="keywords" content="柏翰, 自我介紹, 程式設計, 自然科學, Arduino, Java, JavaScript, Python, C++, RFID" />
+    <meta name="author" content="柏翰" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="柏翰｜自然科學與資訊科技探索者" />
+    <meta property="og:description" content="從程式設計到電子實作，探索自然科學與資訊科技的交會點。" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="" />
+    <title>柏翰｜自然科學與資訊科技探索者</title>
+    <style>
+      :root {
+        --bg: #07131f;
+        --bg-2: #0d1d2d;
+        --bg-3: #112535;
+        --surface: rgba(16, 29, 40, 0.88);
+        --surface-strong: rgba(12, 22, 31, 0.96);
+        --surface-soft: rgba(255, 255, 255, 0.03);
+        --border: rgba(167, 194, 216, 0.18);
+        --text: #edf5ff;
+        --muted: #adc1d6;
+        --accent: #7cc9ff;
+        --accent-2: #7ceec6;
+        --accent-3: #ffd166;
+        --shadow: rgba(3, 11, 18, 0.45);
+      }
+
+      * { box-sizing: border-box; }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", "Microsoft JhengHei", sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(124, 201, 255, 0.18), transparent 22%),
+          radial-gradient(circle at bottom right, rgba(124, 238, 198, 0.12), transparent 24%),
+          linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+        color: var(--text);
+        line-height: 1.7;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                          linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+        background-size: 36px 36px;
+        mask-image: radial-gradient(circle at center, black 25%, transparent 100%);
+        pointer-events: none;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      .container {
+        width: min(1120px, calc(100% - 2rem));
+        margin: 0 auto;
+      }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 40;
+        backdrop-filter: blur(12px);
+        background: rgba(7, 19, 31, 0.72);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 74px;
+        gap: 1rem;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.8rem;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+      }
+
+      .brand-mark {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.25rem;
+        height: 2.25rem;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent), var(--accent-2));
+        color: #06151f;
+        box-shadow: 0 10px 25px rgba(124, 201, 255, 0.3);
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 1.4rem;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .nav-links a {
+        transition: color 0.25s ease;
+      }
+
+      .nav-links a:hover,
+      .nav-links a:focus-visible {
+        color: var(--text);
+      }
+
+      .hero {
+        padding: clamp(4rem, 7vw, 7rem) 0 3rem;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        align-items: center;
+        gap: 2.5rem;
+      }
+
+      .eyebrow {
+        margin: 0 0 0.8rem;
+        font-size: 0.8rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--accent-2);
+        font-weight: 700;
+      }
+
+      h1, h2, h3, p {
+        margin-top: 0;
+      }
+
+      h1 {
+        margin-bottom: 1.2rem;
+        font-size: clamp(2.7rem, 5vw, 5.2rem);
+        line-height: 1.04;
+        letter-spacing: -0.06em;
+      }
+
+      .lead {
+        max-width: 45rem;
+        color: var(--muted);
+        font-size: 1.08rem;
+      }
+
+      .cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin: 2rem 0 1.5rem;
+      }
+
+      .primary-btn,
+      .secondary-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 3rem;
+        padding: 0.8rem 1.35rem;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        font-weight: 700;
+        transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      }
+
+      .primary-btn {
+        background: linear-gradient(135deg, var(--accent), var(--accent-2));
+        color: #06151f;
+        box-shadow: 0 14px 32px rgba(124, 201, 255, 0.26);
+      }
+
+      .secondary-btn {
+        background: rgba(255, 255, 255, 0.02);
+        border-color: var(--border);
+        color: var(--text);
+      }
+
+      .primary-btn:hover,
+      .secondary-btn:hover,
+      .primary-btn:focus-visible,
+      .secondary-btn:focus-visible {
+        transform: translateY(-2px);
+      }
+
+      .mini-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+      }
+
+      .mini-meta span {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.45rem 0.8rem;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.02);
+        color: var(--muted);
+        font-size: 0.83rem;
+      }
+
+      .hero-panel {
+        display: flex;
+        justify-content: center;
+      }
+
+      .hero-card {
+        position: relative;
+        width: min(100%, 430px);
+        padding: 1.6rem;
+        border-radius: 28px;
+        overflow: hidden;
+        background: linear-gradient(180deg, rgba(17, 31, 45, 0.98), rgba(12, 22, 31, 0.9));
+        border: 1px solid var(--border);
+        box-shadow: 0 28px 60px var(--shadow);
+        transition: transform 0.35s ease, box-shadow 0.35s ease;
+      }
+
+      .hero-card::before {
+        content: "";
+        position: absolute;
+        inset: -20% auto auto -10%;
+        width: 220px;
+        height: 220px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(124, 201, 255, 0.38), transparent 60%);
+        filter: blur(8px);
+      }
+
+      .profile-tag {
+        position: relative;
+        z-index: 1;
+        display: inline-block;
+        margin-bottom: 1rem;
+        padding: 0.42rem 0.8rem;
+        border-radius: 999px;
+        background: rgba(124, 201, 255, 0.12);
+        border: 1px solid rgba(124, 201, 255, 0.28);
+        color: var(--accent);
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        font-weight: 700;
+      }
+
+      .hero-card h2 {
+        position: relative;
+        z-index: 1;
+        font-size: clamp(1.6rem, 2vw, 2.2rem);
+        line-height: 1.2;
+        margin-bottom: 0.8rem;
+      }
+
+      .hero-card p {
+        position: relative;
+        z-index: 1;
+        color: var(--muted);
+        margin-bottom: 1.2rem;
+      }
+
+      .stat-list {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.9rem;
+      }
+
+      .stat {
+        padding: 0.9rem 0.7rem;
+        border-radius: 16px;
+        background: rgba(255,255,255,0.025);
+        border: 1px solid var(--border);
+        text-align: center;
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 1.4rem;
+      }
+
+      .stat span {
+        display: block;
+        margin-top: 0.2rem;
+        color: var(--muted);
+        font-size: 0.75rem;
+      }
+
+      .section {
+        padding: 2.75rem 0 1rem;
+      }
+
+      .section-head {
+        margin-bottom: 1.4rem;
+      }
+
+      .section-head h2 {
+        font-size: clamp(1.8rem, 3vw, 3rem);
+        letter-spacing: -0.04em;
+        margin-bottom: 0;
+      }
+
+      .split-grid,
+      .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.2rem;
+      }
+
+      .card {
+        padding: 1.5rem;
+        border-radius: 22px;
+        background: rgba(14, 25, 34, 0.72);
+        border: 1px solid var(--border);
+        box-shadow: 0 14px 30px rgba(4, 11, 18, 0.18);
+      }
+
+      .card h3 {
+        font-size: 1.35rem;
+        margin-bottom: 0.6rem;
+      }
+
+      .card p,
+      .card li {
+        color: var(--muted);
+      }
+
+      .icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.8rem;
+        height: 2.8rem;
+        border-radius: 12px;
+        margin-bottom: 1rem;
+        background: rgba(124, 238, 198, 0.08);
+        border: 1px solid rgba(124, 238, 198, 0.18);
+        color: var(--accent-2);
+        font-size: 1.22rem;
+      }
+
+      .skill-list {
+        list-style: none;
+        padding-left: 0;
+        margin: 0;
+        display: grid;
+        gap: 0.65rem;
+      }
+
+      .skill-list li {
+        position: relative;
+        padding-left: 1.2rem;
+      }
+
+      .skill-list li::before {
+        content: "▹";
+        position: absolute;
+        left: 0;
+        color: var(--accent);
+      }
+
+      .timeline {
+        list-style: none;
+        padding-left: 0;
+        margin: 0;
+        display: grid;
+        gap: 1rem;
+      }
+
+      .timeline li {
+        position: relative;
+        padding-left: 1.2rem;
+        color: var(--muted);
+      }
+
+      .timeline li::before {
+        content: "";
+        position: absolute;
+        top: 0.7rem;
+        left: 0;
+        width: 0.45rem;
+        height: 0.45rem;
+        border-radius: 50%;
+        background: var(--accent-2);
+        box-shadow: 0 0 0 5px rgba(124, 238, 198, 0.08);
+      }
+
+      .contact-box {
+        padding: clamp(2rem, 4vw, 3rem);
+        border-radius: 28px;
+        background: linear-gradient(140deg, rgba(18, 31, 45, 0.92), rgba(11, 22, 32, 0.78));
+        border: 1px solid var(--border);
+        box-shadow: 0 24px 50px rgba(7, 11, 17, 0.28);
+      }
+
+      .contact-box h2 {
+        font-size: clamp(1.9rem, 3vw, 2.9rem);
+        letter-spacing: -0.04em;
+        margin-bottom: 0.8rem;
+      }
+
+      .contact-box p {
+        color: var(--muted);
+      }
+
+      .contact-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.9rem;
+        margin-top: 1.7rem;
+      }
+
+      .contact-links a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 2.9rem;
+        padding: 0.8rem 1rem;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: rgba(255,255,255,0.02);
+        transition: border-color 0.25s ease, transform 0.25s ease;
+      }
+
+      .contact-links a:hover,
+      .contact-links a:focus-visible {
+        border-color: rgba(124, 201, 255, 0.45);
+        transform: translateY(-2px);
+      }
+
+      .site-footer {
+        padding: 2rem 0 3rem;
+        border-top: 1px solid var(--border);
+        background: rgba(9, 15, 21, 0.36);
+      }
+
+      .footer-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(24px);
+        transition: opacity 0.8s ease, transform 0.8s ease;
+        will-change: opacity, transform;
+      }
+
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      @media (max-width: 840px) {
+        .hero-grid,
+        .split-grid,
+        .cards-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .nav-links {
+          gap: 0.8rem;
+          font-size: 0.82rem;
+        }
+
+        .navbar {
+          flex-wrap: wrap;
+          justify-content: center;
+          padding: 0.7rem 0;
+        }
+
+        .footer-inner {
+          flex-direction: column;
+          text-align: center;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .cta-row,
+        .contact-links {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .primary-btn,
+        .secondary-btn,
+        .contact-links a {
+          width: 100%;
+        }
+
+        .stat-list {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        *, *::before, *::after {
+          animation: none !important;
+          transition: none !important;
+        }
+
+        .reveal {
+          opacity: 1;
+          transform: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="navbar container" aria-label="主導覽">
+        <a class="brand" href="#top" aria-label="回到首頁">
+          <span class="brand-mark">B</span>
+          <span>柏翰</span>
+        </a>
+        <div class="nav-links">
+          <a href="#about">關於我</a>
+          <a href="#skills">技能</a>
+          <a href="#interests">興趣</a>
+          <a href="#contact">聯絡</a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="container hero-grid">
+          <div class="hero-copy reveal">
+            <p class="eyebrow">Hello, I'm</p>
+            <h1 id="hero-title">柏翰</h1>
+            <p class="lead">
+              我目前就讀於新竹市立光武國民中學自然科學資優班，熱衷於自然科學、程式設計與電子實作。
+              我喜歡透過實際操作、除錯與實驗來理解問題，而不只是記住答案。
+            </p>
+
+            <div class="cta-row">
+              <a class="primary-btn" href="#about">了解更多</a>
+              <a class="secondary-btn" href="#contact">聯絡我</a>
+            </div>
+
+            <div class="mini-meta" aria-label="興趣標籤">
+              <span>Java</span>
+              <span>JavaScript</span>
+              <span>Python</span>
+              <span>C++</span>
+            </div>
+          </div>
+
+          <div class="hero-panel reveal">
+            <aside class="hero-card" aria-label="個人簡介卡片">
+              <div class="profile-tag">Profile</div>
+              <h2>好奇心驅動，實作改變理解。</h2>
+              <p>
+                我相信學習的力量來自於觀察、實驗與持續嘗試；程式與科學的本質，都是在理解規則後找到更好的解決方式。
+              </p>
+
+              <div class="stat-list">
+                <div class="stat">
+                  <strong>4</strong>
+                  <span>程式語言</span>
+                </div>
+                <div class="stat">
+                  <strong>Arduino</strong>
+                  <span>電子實作</span>
+                </div>
+                <div class="stat">
+                  <strong>AI</strong>
+                  <span>學習工具</span>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="section" aria-labelledby="about-heading">
+        <div class="container">
+          <div class="section-head reveal">
+            <p class="eyebrow">About</p>
+            <h2 id="about-heading">探索、理解，並把知識轉化為行動。</h2>
+          </div>
+
+          <div class="split-grid">
+            <article class="card reveal">
+              <h3>自我介紹</h3>
+              <p>
+                我是柏翰，喜歡把課堂中學到的科學原理與現實生活中的技術連結起來。
+                我不只是想知道「怎麼用」，更想知道「為什麼會這樣」以及「還能如何用不同方法解決」。
+              </p>
+            </article>
+
+            <article class="card reveal">
+              <h3>學習方式</h3>
+              <p>
+                在學習程式與電子實作時，我通常會先觀察錯誤訊息、分析原因，再修改程式與實驗設定，反覆測試與驗證。
+                對我而言，除錯不只是修正錯誤，而是理解系統運作方式的過程。
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="skills" class="section" aria-labelledby="skills-heading">
+        <div class="container">
+          <div class="section-head reveal">
+            <p class="eyebrow">Skills</p>
+            <h2 id="skills-heading">我正在培養的技術與能力。</h2>
+          </div>
+
+          <div class="cards-grid">
+            <article class="card reveal">
+              <span class="icon" aria-hidden="true">⌘</span>
+              <h3>程式語言</h3>
+              <ul class="skill-list">
+                <li>Java：研究語法規則、類別與物件、package、import、例外處理、陣列與編譯流程。</li>
+                <li>JavaScript：用於 DOM 操作、文字處理、剪貼簿、簡單非同步程式設計。</li>
+                <li>Python：學習建立與執行 Python 程式，理解語言基礎與開發流程。</li>
+                <li>C++：接觸 Arduino 的 C++ 程式開發與硬體控制邏輯。</li>
+              </ul>
+            </article>
+
+            <article class="card reveal">
+              <span class="icon" aria-hidden="true">⚙</span>
+              <h3>電子與硬體</h3>
+              <ul class="skill-list">
+                <li>Arduino UNO：研究 C++ 程式、硬體介面與函式庫使用方式。</li>
+                <li>RC522 RFID：了解讀卡機與感應卡的通訊與能量傳輸原理。</li>
+                <li>物理連結：將法拉第電磁感應定律與 RFID、磁扣、感應卡等現象做連結。</li>
+              </ul>
+            </article>
+
+            <article class="card reveal">
+              <span class="icon" aria-hidden="true">▣</span>
+              <h3>研究與問題解決</h3>
+              <ul class="skill-list">
+                <li>習慣觀察錯誤訊息、分析原因、修改程式並重新驗證。</li>
+                <li>查閱官方文件與技術資料，確認推論與可行方案。</li>
+                <li>適應有限設備環境，尋找相容性與替代方案。</li>
+              </ul>
+            </article>
+
+            <article class="card reveal">
+              <span class="icon" aria-hidden="true">✦</span>
+              <h3>未來方向</h3>
+              <ul class="skill-list">
+                <li>更深入學習 C++、資料結構、演算法與嵌入式系統。</li>
+                <li>探索網路技術、人工智慧與程式開發的結合。</li>
+                <li>建立從物理原理、硬體、程式到軟體應用的全面理解。</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="interests" class="section" aria-labelledby="interests-heading">
+        <div class="container">
+          <div class="section-head reveal">
+            <p class="eyebrow">Interests</p>
+            <h2 id="interests-heading">我最在意的，是理解背後的原理。</h2>
+          </div>
+
+          <div class="split-grid">
+            <article class="card reveal">
+              <h3>自然科學</h3>
+              <p>
+                我喜歡把生活中的設備與現象，連結到更深層的科學原理。當我看到 RFID、感應卡或電子元件時，
+                我會想知道它們如何工作、能量如何轉移、以及背後的物理法則是什麼。
+              </p>
+            </article>
+
+            <article class="card reveal">
+              <h3>資訊科技</h3>
+              <p>
+                我對科技的興趣不只停留在「會用」，也包含如何理解它、如何構建它，以及如何在限制條件中尋找最佳方案。
+                這也是我對 AI 輔助開發與程式學習工具感興趣的原因。
+              </p>
+            </article>
+          </div>
+
+          <div class="card reveal" style="margin-top: 1.2rem;">
+            <h3>我的學習信念</h3>
+            <ul class="timeline">
+              <li>學習不只是追求一個標準答案，而是理解「為什麼會這樣」與「還能不能用另一種方法做到」。</li>
+              <li>實作與實驗是理解知識最重要的方式，理論和現象需要相互驗證。</li>
+              <li>AI 可以作為輔助工具，但真正理解程式與系統的能力，仍然來自於持續思考與實際操作。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="section" aria-labelledby="contact-heading">
+        <div class="container">
+          <div class="contact-box reveal">
+            <p class="eyebrow">Contact</p>
+            <h2 id="contact-heading">讓我們一起探索更多可能。</h2>
+            <p>
+              我希望持續在程式設計、自然科學與電子實作之間探索，並逐步建立從原理到應用的完整理解。
+              如果你也對科技、科學、程式或實作有興趣，歡迎一起交流。
+            </p>
+
+            <div class="contact-links">
+              <a href="mailto:cbh0825@example.com">cbh0825@example.com</a>
+              <a href="https://github.com/cbh-0825" target="_blank" rel="noopener noreferrer">GitHub</a>
+              <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <p>© 2026 柏翰</p>
+        <a href="#top">回到頂部</a>
+      </div>
+    </footer>
+
+    <script>
+      const revealItems = document.querySelectorAll('.reveal');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.18 });
+
+      revealItems.forEach((item) => observer.observe(item));
+
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!prefersReducedMotion) {
+        document.addEventListener('pointermove', (event) => {
+          const card = document.querySelector('.hero-card');
+          if (!card) return;
+
+          const x = (event.clientX / window.innerWidth - 0.5) * 18;
+          const y = (event.clientY / window.innerHeight - 0.5) * 18;
+          card.style.transform = `translate(${x * 0.8}px, ${y * 0.8}px)`;
+        });
+      }
+    </script>
+  </body>
+</html>
