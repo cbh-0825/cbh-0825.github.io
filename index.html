@@ -534,6 +534,10 @@
                 grid-template-columns: 1fr;
             }
 
+            .project-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
             .nav-links {
                 gap: 0.8rem;
                 font-size: 0.82rem;
@@ -566,6 +570,10 @@
             }
 
             .stat-list {
+                grid-template-columns: 1fr;
+            }
+
+            .project-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -627,8 +635,11 @@
 
                     <div class="mini-meta" aria-label="興趣標籤">
                         <span>Java</span>
+                        <span>HTML</span>
+                        <span>CSS</span>
                         <span>JavaScript</span>
                         <span>Python</span>
+                        <span>C</span>
                         <span>C++</span>
                         <span>Arduino</span>
                     </div>
@@ -780,8 +791,11 @@
                         <h3>程式語言</h3>
                         <ul class="skill-list">
                             <li>Java：研究語法規則、類別與物件、package、import、例外處理、陣列與編譯流程。</li>
+                            <li>HTML：學習網頁結構設計、語義化標記、表單與無障礙特性。</li>
+                            <li>CSS：掌握樣式設計、佈局方式（Grid、Flexbox）、響應式設計與動畫效果。</li>
                             <li>JavaScript：用於 DOM 操作、文字處理、剪貼簿、簡單非同步程式設計。</li>
                             <li>Python：學習建立與執行 Python 程式，理解語言基礎與開發流程。</li>
+                            <li>C：了解低階程式設計、指標、記憶體管理與系統程式設計。</li>
                             <li>C++：接觸 Arduino 的 C++ 程式開發與硬體控制邏輯。</li>
                         </ul>
                     </article>
