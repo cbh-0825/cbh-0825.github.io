@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="陳柏翰的專案展示｜包括 Java 語法研究、RFID 感應實作與前端互動練習。" />
+    <meta name="keywords" content="專案, Java, RFID, Arduino, 網頁開發, 前端" />
+    <meta name="author" content="陳柏翰" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="陳柏翰的專案展示｜自然科學與資訊科技探索" />
+    <meta property="og:description" content="近期學習與實作的專案合集。" />
+    <meta property="og:type" content="website" />
+    <title>專案展示｜陳柏翰</title>
+    <style>
+        :root {
+            --bg: #07131f;
+            --bg-2: #0d1d2d;
+            --bg-3: #112535;
+            --surface: rgba(16, 29, 40, 0.88);
+            --surface-strong: rgba(12, 22, 31, 0.96);
+            --surface-soft: rgba(255, 255, 255, 0.03);
+            --border: rgba(167, 194, 216, 0.18);
+            --text: #edf5ff;
+            --muted: #adc1d6;
+            --accent: #7cc9ff;
+            --accent-2: #7ceec6;
+            --accent-3: #ffd166;
+            --shadow: rgba(3, 11, 18, 0.45);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", "Microsoft JhengHei", sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(124, 201, 255, 0.18), transparent 22%),
+                radial-gradient(circle at bottom right, rgba(124, 238, 198, 0.12), transparent 24%),
+                linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 36px 36px;
+            mask-image: radial-gradient(circle at center, black 25%, transparent 100%);
+            pointer-events: none;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        .container {
+            width: min(1120px, calc(100% - 2rem));
+            margin: 0 auto;
+        }
+
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            backdrop-filter: blur(12px);
+            background: rgba(7, 19, 31, 0.72);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 74px;
+            gap: 1rem;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+        }
+
+        .brand-mark {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            color: #06151f;
+            box-shadow: 0 10px 25px rgba(124, 201, 255, 0.3);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.4rem;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .nav-links a {
+            transition: color 0.25s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a:focus-visible {
+            color: var(--text);
+        }
+
+        h1, h2, h3, p {
+            margin-top: 0;
+        }
+
+        h1 {
+            margin-bottom: 1.2rem;
+            font-size: clamp(2.7rem, 5vw, 5.2rem);
+            line-height: 1.04;
+            letter-spacing: -0.06em;
+        }
+
+        h2 {
+            font-size: clamp(1.8rem, 3vw, 3rem);
+            letter-spacing: -0.04em;
+        }
+
+        .eyebrow {
+            margin: 0 0 0.8rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--accent-2);
+            font-weight: 700;
+        }
+
+        .section {
+            padding: 2.75rem 0 1rem;
+        }
+
+        .section-head {
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
+
+        .section-head h2 {
+            margin-bottom: 0.8rem;
+        }
+
+        .lead {
+            max-width: 45rem;
+            color: var(--muted);
+            font-size: 1.08rem;
+        }
+
+        .project-detail {
+            display: grid;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .project-header {
+            padding: 2rem;
+            border-radius: 28px;
+            background: linear-gradient(180deg, rgba(17, 31, 45, 0.98), rgba(12, 22, 31, 0.9));
+            border: 1px solid var(--border);
+            box-shadow: 0 28px 60px var(--shadow);
+        }
+
+        .project-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.35rem 0.7rem;
+            border-radius: 999px;
+            background: rgba(124, 201, 255, 0.1);
+            border: 1px solid rgba(124, 201, 255, 0.24);
+            color: var(--accent);
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .project-header h2 {
+            margin-bottom: 0.8rem;
+        }
+
+        .project-header p {
+            color: var(--muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .project-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+        }
+
+        .project-meta span {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.35rem 0.6rem;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 0.72rem;
+        }
+
+        .project-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .project-section {
+            padding: 2rem;
+            border-radius: 22px;
+            background: rgba(14, 25, 34, 0.72);
+            border: 1px solid var(--border);
+            box-shadow: 0 14px 30px rgba(4, 11, 18, 0.18);
+        }
+
+        .project-section h3 {
+            font-size: 1.35rem;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .project-section p {
+            color: var(--muted);
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        .project-list {
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+            display: grid;
+            gap: 0.65rem;
+        }
+
+        .project-list li {
+            position: relative;
+            padding-left: 1.2rem;
+            color: var(--muted);
+        }
+
+        .project-list li::before {
+            content: "▹";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 3rem;
+            padding: 0.8rem 1.35rem;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.02);
+            font-weight: 700;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            margin-bottom: 2rem;
+        }
+
+        .back-btn:hover,
+        .back-btn:focus-visible {
+            transform: translateY(-2px);
+            border-color: rgba(124, 201, 255, 0.45);
+        }
+
+        .site-footer {
+            padding: 2rem 0 3rem;
+            border-top: 1px solid var(--border);
+            background: rgba(9, 15, 21, 0.36);
+        }
+
+        .footer-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            will-change: opacity, transform;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 840px) {
+            .project-content {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                gap: 0.8rem;
+                font-size: 0.82rem;
+            }
+
+            .navbar {
+                flex-wrap: wrap;
+                justify-content: center;
+                padding: 0.7rem 0;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .back-btn {
+                width: 100%;
+            }
+
+            .project-content {
+                gap: 1rem;
+            }
+
+            .project-section {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+
+            .reveal {
+                opacity: 1;
+                transform: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="site-header">
+        <nav class="navbar container" aria-label="主導覽">
+            <a class="brand" href="../index.html" aria-label="回到首頁">
+                <span class="brand-mark">B</span>
+                <span>柏翰</span>
+            </a>
+            <div class="nav-links">
+                <a href="../index.html#about">關於我</a>
+                <a href="../index.html#portfolio">作品方向</a>
+                <a href="../index.html#projects">專案</a>
+                <a href="../index.html#skills">技能</a>
+                <a href="../index.html#interests">興趣</a>
+                <a href="../index.html#contact">聯絡</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="section">
+            <div class="container">
+                <a href="../index.html#projects" class="back-btn">← 回到首頁</a>
+
+                <div class="section-head reveal">
+                    <p class="eyebrow">Projects</p>
+                    <h1>近期學習與實作專案</h1>
+                    <p class="lead">以下展示我正在進行或已完成的主要專案。每個專案都涉及程式設計、硬體整合或網頁開發的實際應用。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Java 專案 -->
+        <section class="section">
+            <div class="container">
+                <div class="project-detail reveal">
+                    <div class="project-header">
+                        <span class="project-tag">Java</span>
+                        <h2>Java 語法研究筆記</h2>
+                        <p>系統性地整理與研究 Java 語言的核心概念，從基礎語法到進階特性。透過實際編寫與測試程式，深入理解 Java 在不同情況下的行為規則與例外機制。</p>
+                        <div class="project-meta">
+                            <span>OOP</span>
+                            <span>Exception Handling</span>
+                            <span>Java SE</span>
+                            <span>編譯原理</span>
+                        </div>
+                    </div>
+
+                    <div class="project-content">
+                        <div class="project-section reveal">
+                            <h3>📚 主要內容</h3>
+                            <ul class="project-list">
+                                <li>類別與物件：物件導向的設計原理與實現</li>
+                                <li>Package 與 Import：模組化程式組織與命名空間</li>
+                                <li>例外處理：try-catch-finally 機制與自訂例外</li>
+                                <li>陣列與集合：資料結構的使用與選擇</li>
+                                <li>編譯與執行：Java 編譯流程、字節碼與 JVM</li>
+                                <li>語法邊界：研究不同程式結構的編譯規則</li>
+                            </ul>
+                        </div>
+
+                        <div class="project-section reveal">
+                            <h3>🎯 研究方法</h3>
+                            <ul class="project-list">
+                                <li>撰寫測試程式驗證假設</li>
+                                <li>觀察編譯器錯誤訊息與警告</li>
+                                <li>查閱 Java 官方文檔與規範</li>
+                                <li>記錄邊界情況與例外行為</li>
+                                <li>整理成系統的筆記與教程</li>
+                                <li>準備 Oracle Java 1Z0-819 認證</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RFID 專案 -->
+        <section class="section">
+            <div class="container">
+                <div class="project-detail reveal">
+                    <div class="project-header">
+                        <span class="project-tag">Arduino</span>
+                        <h2>RFID 感應實作</h2>
+                        <p>結合硬體與軟體的整合專案，研究無線射頻辨識（RFID）系統的工作原理。不只是實現功能，更重點理解背後的電子學與物理原理。</p>
+                        <div class="project-meta">
+                            <span>RC522 RFID</span>
+                            <span>Arduino UNO</span>
+                            <span>C++</span>
+                            <span>物理原理</span>
+                        </div>
+                    </div>
+
+                    <div class="project-content">
+                        <div class="project-section reveal">
+                            <h3>⚙️ 硬體與通訊</h3>
+                            <ul class="project-list">
+                                <li>RC522 讀卡機基本配置與通訊協定（SPI）</li>
+                                <li>感應卡的能量來源與通訊方式</li>
+                                <li>Arduino 與讀卡機的連接與控制</li>
+                                <li>實時讀取與解析卡片資料</li>
+                                <li>多卡同時辨識的實現</li>
+                                <li>除錯與效能最佳化</li>
+                            </ul>
+                        </div>
+
+                        <div class="project-section reveal">
+                            <h3>🔬 物理原理研究</h3>
+                            <ul class="project-list">
+                                <li>法拉第電磁感應定律與 RFID 的關係</li>
+                                <li>無線能量傳輸的原理</li>
+                                <li>感應卡如何從讀卡機取得能量</li>
+                                <li>電磁波的頻率與距離效應</li>
+                                <li>屏蔽與干擾問題的物理基礎</li>
+                                <li>從現象連結理論的學習過程</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 前端互動練習 -->
+        <section class="section">
+            <div class="container">
+                <div class="project-detail reveal">
+                    <div class="project-header">
+                        <span class="project-tag">Web</span>
+                        <h2>前端互動練習</h2>
+                        <p>透過實際網頁開發來練習前端技術。從 DOM 操作到非同步程式設計，逐步掌握 JavaScript 與網頁互動的各個面向。</p>
+                        <div class="project-meta">
+                            <span>HTML</span>
+                            <span>CSS</span>
+                            <span>JavaScript</span>
+                            <span>DOM API</span>
+                        </div>
+                    </div>
+
+                    <div class="project-content">
+                        <div class="project-section reveal">
+                            <h3>💻 核心技術</h3>
+                            <ul class="project-list">
+                                <li>DOM 元素選擇與操作</li>
+                                <li>事件監聽與事件委託</li>
+                                <li>文字處理與正規表達式</li>
+                                <li>剪貼簿 API（複製、貼上）</li>
+                                <li>非同步程式設計（Promise、async/await）</li>
+                                <li>API 呼叫與資料處理</li>
+                            </ul>
+                        </div>
+
+                        <div class="project-section reveal">
+                            <h3>🎨 實踐案例</h3>
+                            <ul class="project-list">
+                                <li>動態內容生成與更新</li>
+                                <li>使用者輸入驗證與反饋</li>
+                                <li>響應式設計的實現</li>
+                                <li>動畫效果與過渡</li>
+                                <li>本機儲存資料持久化</li>
+                                <li>可用性與無障礙設計</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <p>© 2026 陳柏翰</p>
+            <a href="../index.html#top">回到首頁</a>
+        </div>
+    </footer>
+
+    <script>
+        const revealItems = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.18 });
+
+        revealItems.forEach((item) => observer.observe(item));
+
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!prefersReducedMotion) {
+            document.addEventListener('pointermove', (event) => {
+                const headers = document.querySelectorAll('.project-header');
+                headers.forEach((header) => {
+                    const x = (event.clientX / window.innerWidth - 0.5) * 12;
+                    const y = (event.clientY / window.innerHeight - 0.5) * 12;
+                    header.style.transform = `translate(${x * 0.6}px, ${y * 0.6}px)`;
+                });
+            });
+        }
+    </script>
+</body>
+
+</html>
