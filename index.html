@@ -353,6 +353,27 @@
             min-height: 100%;
         }
 
+        .card-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 2.5rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 999px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            color: #06151f;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            margin-top: auto;
+        }
+
+        .card-link:hover,
+        .card-link:focus-visible {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 32px rgba(124, 201, 255, 0.26);
+        }
+
         .project-tag {
             display: inline-flex;
             align-self: flex-start;
@@ -751,6 +772,7 @@
                             <span>Exception</span>
                             <span>Java SE</span>
                         </div>
+                        <a href="projects/projects.html#java" class="card-link">查看詳情 →</a>
                     </article>
 
                     <article class="card project-card reveal">
@@ -762,6 +784,7 @@
                             <span>Arduino UNO</span>
                             <span>Physics</span>
                         </div>
+                        <a href="projects/projects.html#rfid" class="card-link">查看詳情 →</a>
                     </article>
 
                     <article class="card project-card reveal">
@@ -773,6 +796,7 @@
                             <span>CSS</span>
                             <span>JS</span>
                         </div>
+                        <a href="projects/projects.html#web" class="card-link">查看詳情 →</a>
                     </article>
                 </div>
             </div>
